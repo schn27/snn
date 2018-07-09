@@ -9,7 +9,7 @@ class SNN:
 		self.activationFunc = lambda x: scipy.special.expit(x)
 		
 		if type(config) == str:
-			readFromFile(self, str)
+			self.loadFromFile(config)
 		else:
 			self.weights = [];
 			previousLayer = 0;
