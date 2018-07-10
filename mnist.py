@@ -10,14 +10,19 @@ def targetsFromLabel(label):
 	return targets	
 
 def forEach(labelsFileName, imagesFileName, n, processor):
-	with open(labelsFileName, "rb") as labels:
-		with open(imagesFileName, "rb") as images:
-			labels.read(8)			
-			images.read(16)
+	imgSize = 28 * 28
 
-			for i in range(n):
-				processor.process(ord(labels.read(1)), images.read(28 * 28))
-				if (i % 1000) == 0:
-					print(i)
+	with open(labelsFileName, "rb") as f:
+		f.read(8)
+		labels = f.read(n)
 
-			processor.finish()
+	with open(imagesFileName, "rb") as f:
+		f.read(16)
+		images = f.read(imgSize * n)
+
+	for i in range(n):
+		processor.process(labels[i], images[imgSize * i : imgSize * (i + 1)])
+		if (i % 1000) == 0:
+			print(i)
+
+	processor.finish()
