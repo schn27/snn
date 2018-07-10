@@ -13,6 +13,8 @@ class Processor:
 	def finish(self):
 		self.nn.dumpToFile("mnist-784-100-10.txt")		
 
-forEach("data/train-labels.idx1-ubyte", "data/train-images.idx3-ubyte", 60000, Processor())
+processor = Processor()
 
-
+for i in range(3):
+	print("epoch:", i + 1)
+	forEach("data/train-labels.idx1-ubyte", "data/train-images.idx3-ubyte", 60000, processor)
