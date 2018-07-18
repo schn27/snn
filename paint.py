@@ -6,7 +6,7 @@ from mnist import imageNormalizer
 
 def getLabel(outputs):
 	index = numpy.argmax(outputs)
-	return index if outputs[index] > 0.4 else "unknown"
+	return index if outputs[index] > 0.2 else "unknown"
 
 class Paint():
 	def __init__(self):
@@ -53,9 +53,10 @@ class Paint():
 		y = self.root.winfo_rooty() + self.canvas.winfo_y()
 		x1 = x + self.canvas.winfo_width()
 		y1 = y + self.canvas.winfo_height()
-		resized = ImageGrab.grab(bbox = (x + 4, y + 4, x1 - 4, y1 - 4)).resize((28, 28), resample = Image.BILINEAR);
+		resized = ImageGrab.grab(bbox = (x + 4, y + 4, x1 - 4, y1 - 4)).resize((28, 28), resample = Image.NEAREST);
 		outputs = self.nn.query(imageNormalizer(list(resized.getdata(0))))[-1]
 		self.result.set(getLabel(outputs))
+		#self.result.set(outputs)
 
 	def erase(self):
 		self.canvas.delete("all")

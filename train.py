@@ -4,16 +4,21 @@ from mnist import targetsFromLabel
 from snn import SNN
 
 class Processor:
-	def __init__(self):
-		self.nn = SNN([784, 100, 10])
+	def __init__(self, config):
+		self.config = config
+		self.nn = SNN(config)
 
 	def process(self, label, image):
-		self.nn.train(imageNormalizer(image), targetsFromLabel(label), 0.1)
+		self.nn.train(imageNormalizer(image), targetsFromLabel(label), 0.2)
 
 	def finish(self):
-		self.nn.dumpToFile("mnist-784-100-10.txt")		
+		name = "mnist"
+		for v in self.config:
+			name += "-" + str(v)
+		name += ".txt"
+		self.nn.dumpToFile(name)
 
-processor = Processor()
+processor = Processor([784, 100, 10])
 
 for i in range(3):
 	print("epoch:", i + 1)
